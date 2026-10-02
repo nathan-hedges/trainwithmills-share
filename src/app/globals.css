@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+/* ----------------------------------------------------------------------------
+   Fonts -resolved from the next/font CSS variables set on <html> in layout.tsx
+---------------------------------------------------------------------------- */
+@theme inline {
+ --font-sans: var(--font-jost), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+ --font-display: var(--font-fraunces), ui-serif, Georgia, "Times New Roman", serif;
+}
+
+/* ----------------------------------------------------------------------------
+   Design tokens
+---------------------------------------------------------------------------- */
+@theme {
+  /* Brand -Royal blue */
+ --color-royal-50: #eef2ff;
+ --color-royal-100: #dde4ff;
+ --color-royal-200: #c2ceff;
+ --color-royal-300: #9badff;
+ --color-royal-400: #6f84ff;
+ --color-royal-500: #4a5cf7;
+ --color-royal-600: #2f43d8;
+ --color-royal-700: #2434ad;
+ --color-royal-800: #212f8a;
+ --color-royal-900: #1f2c6e;
+ --color-royal-950: #141942;
+
+  /* Accent -Champagne gold (used sparingly for the luxe note) */
+ --color-gold-100: #f7efd9;
+ --color-gold-200: #eaddb0;
+ --color-gold-300: #dcc587;
+ --color-gold-400: #ccad5b;
+ --color-gold-500: #bd9842;
+ --color-gold-600: #9e7d34;
+
+  /* Neutrals */
+ --color-paper: #fafbff;
+ --color-ink: #12162e;
+ --color-muted: #586079;
+ --color-line: #e8eaf4;
+
+ --color-background: #fafbff;
+ --color-foreground: #12162e;
+}
+
+/* ----------------------------------------------------------------------------
+   Base
+---------------------------------------------------------------------------- */
+* {
+  border-color: var(--color-line);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+ -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
+}
+
+/* iOS Safari zooms the whole page in when you focus a field smaller than 16px,
+   and leaves it zoomed. Our inputs are text-sm (14px), so force 16px on phones
+   - the layout is unaffected, the zoom-jump goes away. */
+@media (max-width: 767px) {
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+::selection {
+  background: color-mix(in oklab, var(--color-royal-500) 22%, white);
+  color: var(--color-royal-950);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-royal-500);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ----------------------------------------------------------------------------
+   Utilities
+---------------------------------------------------------------------------- */
+/* Refined, layered shadows -registered as utilities so hover:/group-hover: variants apply */
+@utility shadow-soft {
+  box-shadow: 0 1px 2px rgba(18, 22, 46, 0.04), 0 10px 30px -14px rgba(18, 22, 46, 0.16);
+}
+@utility shadow-elevated {
+  box-shadow: 0 2px 6px rgba(18, 22, 46, 0.05), 0 28px 60px -28px rgba(31, 44, 110, 0.32);
+}
+@utility shadow-glow {
+  box-shadow: 0 18px 50px -18px rgba(47, 67, 216, 0.55);
+}
+
+/* Thin uppercase tracking for eyebrows */
+.tracking-luxe { letter-spacing: 0.22em; }
+
+/* Gradient text for occasional emphasis */
+.text-gradient-royal {
+  background: linear-gradient(120deg, var(--color-royal-700), var(--color-royal-500) 55%, var(--color-royal-400));
+ -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* ----------------------------------------------------------------------------
+   Keyframes / ambient motion
+---------------------------------------------------------------------------- */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-16px); }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.animate-float { animation: float 8s ease-in-out infinite; }
+.animate-marquee { animation: marquee 34s linear infinite; }
+
+/* ----------------------------------------------------------------------------
+   Respect reduced-motion
+---------------------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
